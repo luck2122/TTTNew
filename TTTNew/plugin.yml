@@ -1,0 +1,11 @@
+main: de.luck212.tttnew.main.Main
+name: TTT
+version: 1.0
+
+commands:
+   setup:
+      descritpion: Setze diverse Locations
+   start:
+      description: Starte das Spiel
+   build:
+      description: Baue die Map belibieg um
