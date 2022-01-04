@@ -1,7 +1,11 @@
 package de.luck212.tttnew.countdowns;
 
-import java.util.ArrayList;
-
+import de.luck212.tttnew.gamestates.IngameState;
+import de.luck212.tttnew.main.Main;
+import de.luck212.tttnew.role.Role;
+import net.minecraft.server.v1_8_R1.ChatSerializer;
+import net.minecraft.server.v1_8_R1.EnumTitleAction;
+import net.minecraft.server.v1_8_R1.PacketPlayOutTitle;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
@@ -9,17 +13,13 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
-import de.luck212.tttnew.gamestates.IngameState;
-import de.luck212.tttnew.main.Main;
-import de.luck212.tttnew.role.Role;
-import net.minecraft.server.v1_8_R1.ChatSerializer;
-import net.minecraft.server.v1_8_R1.EnumTitleAction;
-import net.minecraft.server.v1_8_R1.PacketPlayOutTitle;
+import java.util.ArrayList;
 
 public class RoleCountdown extends Countdown{
 	
 	private int seconds = 5;
 	private Main plugin;
+	private PacketPlayOutTitle title;
 	
 	public RoleCountdown(Main plugin) {
 		this.plugin = plugin;
@@ -56,12 +56,17 @@ public class RoleCountdown extends Countdown{
 						Role playerRole = plugin.getRoleManager().getPlayerRole(current);
 						
 						if(playerRole == Role.DETECTIVE || playerRole == Role.TRAITOR)
-							plugin.getRoleInventories().getPointManager().setPoints(current, 10);
+							plugin.getRoleInventories().getPointManager().setPoints(current, 2);
 						
 						current.sendMessage(Main.PREFIX + "§7Deine Rolle §l" + playerRole.getChatColor() + playerRole.getName());
 						current.setDisplayName(playerRole.getChatColor() + current.getName());
-						
-						PacketPlayOutTitle title = new PacketPlayOutTitle(EnumTitleAction.TITLE, ChatSerializer.a("{\"text\":\"" + playerRole.getName() +"\", \"color\":\"" + playerRole.getColor().toString().toLowerCase()  + "\"}"), 20, 40, 20);
+
+						if(playerRole == Role.TRAITOR)
+							title = new PacketPlayOutTitle(EnumTitleAction.TITLE, ChatSerializer.a("{\"text\":\"" + playerRole.getName() +"\", \"color\":\"red\"}"), 20, 40, 20);
+						else if(playerRole == Role.DETECTIVE)
+							title = new PacketPlayOutTitle(EnumTitleAction.TITLE, ChatSerializer.a("{\"text\":\"" + playerRole.getName() +"\", \"color\":\"blue\"}"), 20, 40, 20);
+						else
+							title = new PacketPlayOutTitle(EnumTitleAction.TITLE, ChatSerializer.a("{\"text\":\"" + playerRole.getName() +"\", \"color\":\"green\"}"), 20, 40, 20);
 						((CraftPlayer) current.getPlayer()).getHandle().playerConnection.sendPacket(title);
 						
 						
@@ -69,8 +74,7 @@ public class RoleCountdown extends Countdown{
 							current.sendMessage( Main.PREFIX + "§7Die Traitor sind: §c§l" + String.join(", ", traitorPlayers));
 						ingameState.updateScoreboard(current);
 						
-						
-						// TODO 10 noch auf 2 setzen
+
 						
 						current.setLevel(0);
 					}

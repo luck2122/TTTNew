@@ -1,7 +1,14 @@
 package de.luck212.tttnew.listener;
 
+import de.luck212.tttnew.gamestates.IngameState;
+import de.luck212.tttnew.main.Main;
+import de.luck212.tttnew.role.Role;
+import de.luck212.tttnew.role.RoleManager;
+import net.minecraft.server.v1_8_R1.EnumClientCommand;
+import net.minecraft.server.v1_8_R1.PacketPlayInClientCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -9,13 +16,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-
-import de.luck212.tttnew.gamestates.IngameState;
-import de.luck212.tttnew.main.Main;
-import de.luck212.tttnew.role.Role;
-import de.luck212.tttnew.role.RoleManager;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 public class GameProgressListener implements Listener {
 
@@ -65,6 +67,23 @@ public class GameProgressListener implements Listener {
 		event.setDeathMessage(null);
 		IngameState ingameState = (IngameState) plugin.getGameStateManager().getCurrentGameState();
 		Player victim = event.getEntity();
+
+		PacketPlayInClientCommand packet = new PacketPlayInClientCommand(EnumClientCommand.PERFORM_RESPAWN);
+		((CraftPlayer)victim).getHandle().playerConnection.a(packet);
+
+		event.getDrops().clear();
+		victim.getInventory().setChestplate(null);
+		victim.getInventory().setHelmet(null);
+
+
+
+		if(plugin.getGameStateManager().getCurrentGameState() instanceof IngameState) {
+			ingameState.addSpectator(victim);
+		}else
+			victim.setGameMode(GameMode.CREATIVE);
+
+
+
 		if (victim.getKiller() != null) {
 
 			Player killer = victim.getKiller();
@@ -140,7 +159,6 @@ public class GameProgressListener implements Listener {
 		for(Player current : Bukkit.getOnlinePlayers()) {
 			ingameState.updateScoreboard(current);
 		}
-		event.setDeathMessage("");
 	}
 	
 	@EventHandler

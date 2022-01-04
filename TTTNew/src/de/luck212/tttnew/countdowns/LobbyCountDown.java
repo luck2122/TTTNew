@@ -1,13 +1,5 @@
 package de.luck212.tttnew.countdowns;
 
-import java.util.ArrayList;
-import java.util.Collections;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Sound;
-import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
-import org.bukkit.entity.Player;
-
 import de.luck212.tttnew.gamestates.GameState;
 import de.luck212.tttnew.gamestates.GameStateManager;
 import de.luck212.tttnew.gamestates.LobbyState;
@@ -17,6 +9,13 @@ import de.luck212.tttnew.voting.Voting;
 import net.minecraft.server.v1_8_R1.ChatSerializer;
 import net.minecraft.server.v1_8_R1.EnumTitleAction;
 import net.minecraft.server.v1_8_R1.PacketPlayOutTitle;
+import org.bukkit.Bukkit;
+import org.bukkit.Sound;
+import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
+import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class LobbyCountDown extends Countdown{
 	

@@ -33,10 +33,8 @@ public class RoleManager {
 	
 	public void calculateRoles() {
 		int playerSize = players.size();
-//		traitors = (int) Math.round(Math.log(playerSize) * 1.2);
-//		detectives = (int) Math.round(Math.log(playerSize) * 0.5);
-		traitors = 1;
-		detectives = 1;
+		traitors = (int) Math.round(Math.log(playerSize) * 1.2);
+		detectives = (int) Math.round(Math.log(playerSize) * 0.5);
 		innocents = playerSize - traitors - detectives;
 		
 		System.out.println("Traitors: " + traitors);

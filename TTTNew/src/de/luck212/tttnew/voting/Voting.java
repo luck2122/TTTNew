@@ -1,16 +1,15 @@
 package de.luck212.tttnew.voting;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-
+import de.luck212.tttnew.main.Main;
+import de.luck212.tttnew.util.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
-import de.luck212.tttnew.main.Main;
-import de.luck212.tttnew.util.ItemBuilder;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 
 public class Voting {
 	

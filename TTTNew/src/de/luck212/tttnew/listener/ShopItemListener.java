@@ -27,8 +27,7 @@ import de.luck212.tttnew.role.RoleInventories;
 
 
 public class ShopItemListener implements Listener{
-	
-	// TODO Listener für TK maybe mit scheduler
+
 	
 	private Main plugin;
 	

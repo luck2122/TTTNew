@@ -1,30 +1,21 @@
 package de.luck212.tttnew.main;
 
-import java.util.ArrayList;
-
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
-
 import de.luck212.tttnew.commands.BuildCommand;
 import de.luck212.tttnew.commands.SetupCommand;
 import de.luck212.tttnew.commands.StartCommand;
 import de.luck212.tttnew.gamestates.GameState;
 import de.luck212.tttnew.gamestates.GameStateManager;
-import de.luck212.tttnew.listener.ChatListener;
-import de.luck212.tttnew.listener.ChestItemListener;
-import de.luck212.tttnew.listener.GameProgressListener;
-import de.luck212.tttnew.listener.GameProtectionListener;
-import de.luck212.tttnew.listener.NeverLoseFoodListener;
-import de.luck212.tttnew.listener.PlayerLobbyConnectionListener;
-import de.luck212.tttnew.listener.ShopItemListener;
-import de.luck212.tttnew.listener.TesterListener;
-import de.luck212.tttnew.listener.VotingListener;
+import de.luck212.tttnew.listener.*;
 import de.luck212.tttnew.role.RoleInventories;
 import de.luck212.tttnew.role.RoleManager;
 import de.luck212.tttnew.voting.Map;
 import de.luck212.tttnew.voting.Voting;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.ArrayList;
 
 public class Main extends JavaPlugin {
 	
@@ -32,7 +23,6 @@ public class Main extends JavaPlugin {
 							   PERMISSION = PREFIX + "§cDazu hast du keine Rechte!";
 	// TODO Bugs: OneShotBow geht noch nciht kaputt und ist nicht one shot. TK klappt noch nicht geht vielleicht auch nie
 	// TODO Bugs: Am Ende Spieler Reviven und an alle an LobbyLocation teleportieren. Wenn Spieler tot dann an Spectatorlocation teleportiern und gm 1 setzen und Spieler unsichtrbar machen maybe auch mit invis
-	// TODO 10 noch auf 2 setzen im RoleCountDown Zeile 56
 	private GameStateManager gameStateManager;
 	private ArrayList<Player> players;
 	private ArrayList<Map> maps;

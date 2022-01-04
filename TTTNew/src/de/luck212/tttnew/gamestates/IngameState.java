@@ -1,19 +1,22 @@
 package de.luck212.tttnew.gamestates;
 
-import java.util.ArrayList;
-import java.util.Collections;
-
+import de.luck212.tttnew.countdowns.RoleCountdown;
+import de.luck212.tttnew.main.Main;
+import de.luck212.tttnew.role.Role;
+import de.luck212.tttnew.voting.Map;
+import net.minecraft.server.v1_8_R1.ChatSerializer;
+import net.minecraft.server.v1_8_R1.EnumTitleAction;
+import net.minecraft.server.v1_8_R1.PacketPlayOutTitle;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
-import de.luck212.tttnew.countdowns.RoleCountdown;
-import de.luck212.tttnew.main.Main;
-import de.luck212.tttnew.role.Role;
-import de.luck212.tttnew.voting.Map;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class IngameState extends GameState {
 
@@ -22,6 +25,7 @@ public class IngameState extends GameState {
 	private ArrayList<Player> players, spectators;
 	private RoleCountdown roleCountDown;
 	public boolean grace;
+	private PacketPlayOutTitle title;
 
 	private Role winningRole;
 
@@ -107,6 +111,18 @@ public class IngameState extends GameState {
 	@Override
 	public void stop() {
 		Bukkit.broadcastMessage(Main.PREFIX + "§6 Sieger: " + winningRole.getChatColor() + winningRole.getName());
+
+		for(Player current : Bukkit.getOnlinePlayers()){
+			if(winningRole == Role.TRAITOR)
+				title = new PacketPlayOutTitle(EnumTitleAction.TITLE, ChatSerializer.a("{\"text\":\"" + winningRole.getName() +"\", \"color\":\"red\"}"), 20, 40, 20);
+			else if(winningRole == Role.DETECTIVE)
+				title = new PacketPlayOutTitle(EnumTitleAction.TITLE, ChatSerializer.a("{\"text\":\"" + winningRole.getName() +"\", \"color\":\"blue\"}"), 20, 40, 20);
+			else
+				title = new PacketPlayOutTitle(EnumTitleAction.TITLE, ChatSerializer.a("{\"text\":\"" + winningRole.getName() +"\", \"color\":\"green\"}"), 20, 40, 20);
+			((CraftPlayer) current.getPlayer()).getHandle().playerConnection.sendPacket(title);
+			for(int i = 0; i < players.size(); i++)
+				current.teleport(map.getSpawnLocations()[i]);
+		}
 	}
 
 	public void setGrace(boolean grace) {
